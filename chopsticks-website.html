@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chopsticks - Traditional Fish & Chips and Chinese Takeaway | Liverpool</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #d4342a;
+            --primary-dark: #b02920;
+            --secondary: #f8b500;
+            --dark: #1a1a1a;
+            --light: #ffffff;
+            --cream: #faf8f3;
+            --gray: #6b7280;
+            --gray-light: #f3f4f6;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .nav-logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo::before {
+            content: '🥢';
+            font-size: 1.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .order-btn {
+            background: var(--primary);
+            color: var(--light);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .order-btn:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--light);
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dark) 0%, #2d2d2d 100%);
+            color: var(--light);
+            padding: 10rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 52, 42, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(248, 181, 0, 0.1) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(248, 181, 0, 0.2);
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(4rem, 12vw, 8rem);
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            color: var(--light);
+            line-height: 1;
+        }
+
+        .logo-accent {
+            color: var(--secondary);
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-primary {
+            background: var(--primary);
+            color: var(--light);
+            border-color: var(--primary);
+        }
+
+        .cta-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 52, 42, 0.3);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: var(--light);
+            border-color: var(--light);
+        }
+
+        .cta-secondary:hover {
+            background: var(--light);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        /* Info Bar */
+        .info-bar {
+            background: var(--primary);
+            color: var(--light);
+            padding: 1.5rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+        }
+
+        .info-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .info-subtext {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Section Base Styles */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--gray-light);
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--dark);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Hours Section */
+        .hours-section {
+            background: var(--cream);
+        }
+
+        .hours-card {
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--light);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+
+        .hours-row.closed {
+            opacity: 0.5;
+        }
+
+        .hours-row.closed .time {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .day {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .time {
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        /* Menu Section */
+        .menu-section {
+            background: var(--light);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-category {
+            background: var(--light);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid var(--gray-light);
+            transition: all 0.3s ease;
+        }
+
+        .menu-category:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+        }
+
+        .category-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: var(--dark);
+            letter-spacing: 0.05em;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .item-name {
+            flex: 1;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: var(--primary);
+            white-space: nowrap;
+            font-size: 1.05rem;
+        }
+
+        .item-note {
+            font-size: 0.85rem;
+            color: var(--gray);
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        /* Banquets */
+        .banquet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .banquet-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banquet-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .banquet-header {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .banquet-items {
+            list-style: none;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .banquet-items li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .banquet-items li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        /* Highlights */
+        .highlights-section {
+            background: var(--dark);
+            color: var(--light);
+        }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .highlight-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .highlight-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-card h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .highlight-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Map Section */
+        .map-section {
+            background: var(--cream);
+        }
+
+        .map-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 500px;
+            border: 0;
+        }
+
+        .location-info {
+            background: var(--light);
+            padding: 2.5rem;
+            text-align: center;
+            margin-top: 2rem;
+            border-radius: 20px;
+            max-width: 1000px;
+            margin: 2rem auto 0;
+        }
+
+        .location-address {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .directions-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: var(--light);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+        }
+
+        .directions-btn:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 52, 42, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: var(--light);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary);
+        }
+
+        .allergen-notice {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Kiddie's Special Box */
+        .kiddies-box {
+            background: linear-gradient(135deg, var(--secondary) 0%, #f39c12 100%);
+            color: var(--dark);
+            border: none;
+        }
+
+        .kiddies-box .category-title {
+            color: var(--dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 300px;
+                height: 100vh;
+                background: rgba(26, 26, 26, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.3s ease;
+                padding: 2rem;
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero {
+                padding: 8rem 2rem 4rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .info-bar {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            section {
+                padding: 4rem 1rem;
+            }
+
+            .hours-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .menu-category {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Chopsticks</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#hours">Hours</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#location">Location</a></li>
+                <li><a href="tel:01512284995" class="order-btn">📞 Order Now</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge">ESTABLISHED LOCAL FAVOURITE</div>
+            <h1 class="logo">Chop<span class="logo-accent">sticks</span></h1>
+            <p class="tagline">Traditional English Fish & Chips meets Authentic Chinese Cuisine</p>
+            <div class="hero-cta">
+                <a href="tel:01512284995" class="cta-btn cta-primary">
+                    📞 Call to Order
+                </a>
+                <a href="#menu" class="cta-btn cta-secondary">
+                    View Menu
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Bar -->
+    <div class="info-bar">
+        <div class="info-item">
+            <div class="info-icon">📞</div>
+            <div class="info-text">0151 228 4995</div>
+            <div class="info-subtext">Telephone Orders Welcome</div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">🚗</div>
+            <div class="info-text">Delivery Available</div>
+            <div class="info-subtext">£1.50 within 2 miles</div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">💵</div>
+            <div class="info-text">Cash Only</div>
+            <div class="info-subtext">Please have exact change</div>
+        </div>
+        <div class="info-item">
+            <div class="info-icon">🎉</div>
+            <div class="info-text">Open Bank Holidays</div>
+            <div class="info-subtext">Tuesday Closed</div>
+        </div>
+    </div>
+
+    <!-- Hours Section -->
+    <section class="hours-section" id="hours">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">WHEN WE'RE OPEN</div>
+                <h2 class="section-title">Opening Hours</h2>
+                <p class="section-subtitle">Serving Tuebrook and Liverpool 6 days a week</p>
+            </div>
+            <div class="hours-card">
+                <div class="hours-row">
+                    <span class="day">Monday</span>
+                    <span class="time">4:30pm - 11:00pm</span>
+                </div>
+                <div class="hours-row closed">
+                    <span class="day">Tuesday</span>
+                    <span class="time">CLOSED</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Wednesday</span>
+                    <span class="time">4:30pm - 11:00pm</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Thursday</span>
+                    <span class="time">4:30pm - 11:00pm</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Friday</span>
+                    <span class="time">4:30pm - 11:30pm</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Saturday</span>
+                    <span class="time">4:30pm - 11:30pm</span>
+                </div>
+                <div class="hours-row">
+                    <span class="day">Sunday</span>
+                    <span class="time">4:30pm - 11:00pm</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu-section" id="menu">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">WHAT WE SERVE</div>
+                <h2 class="section-title">Our Menu</h2>
+                <p class="section-subtitle">All meals freshly cooked with pure vegetable oil. Most dishes contain sesame oil, cooking wine, oyster sauce & soy sauce.</p>
+            </div>
+
+            <div class="menu-grid">
+                <!-- Fish & Chips -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🐟</span>
+                        <h3 class="category-title">Fish & Chips</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Chips (R)</span>
+                            <span class="item-price">£2.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chips (L)</span>
+                            <span class="item-price">£2.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Salt & Pepper Chips</span>
+                            <span class="item-price">£3.60</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Fish</span>
+                            <span class="item-price">£5.00</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken Breast</span>
+                            <span class="item-price">£4.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken Nuggets (6)</span>
+                            <span class="item-price">£3.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Sausage</span>
+                            <span class="item-price">£1.20 / £2.00</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Scallop (5)</span>
+                            <span class="item-price">£2.80</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soups -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🍜</span>
+                        <h3 class="category-title">Soups</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Hot & Sour Soup</span>
+                            <span class="item-price">£3.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken & Sweet Corn Soup</span>
+                            <span class="item-price">£3.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Crab Meat & Sweet Corn Soup</span>
+                            <span class="item-price">£3.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken & Mushroom Soup</span>
+                            <span class="item-price">£3.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Won Ton Soup</span>
+                            <span class="item-price">£4.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Won Ton & Noodle Soup</span>
+                            <span class="item-price">£5.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Starters -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🥢</span>
+                        <h3 class="category-title">Starters</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Crispy Aromatic Duck</span>
+                            <span class="item-price">£10 / £19</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Prawn Crackers</span>
+                            <span class="item-price">£2.40</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chop Suey Roll</span>
+                            <span class="item-price">£2.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Mini Vegetable Spring Roll (10)</span>
+                            <span class="item-price">£3.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Sesame Prawn on Toast</span>
+                            <span class="item-price">£3.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Steamed Char Siu Bun</span>
+                            <span class="item-price">£4.20</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- English Dishes -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🍽️</span>
+                        <h3 class="category-title">English Dishes</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Sirloin Steak Dinner</span>
+                            <span class="item-price">£8.70</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Mixed Grill Dinner</span>
+                            <span class="item-price">£8.70</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Fish Dinner</span>
+                            <span class="item-price">£8.00</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken Breast Dinner</span>
+                            <span class="item-price">£7.50</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Sausage Dinner</span>
+                            <span class="item-price">£4.10 / £5.30</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Pie Dinner</span>
+                            <span class="item-price">£4.30 / £5.10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chicken Dishes -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🍗</span>
+                        <h3 class="category-title">Chicken Dishes</h3>
+                    </div>
+                    <div class="item-note" style="margin-bottom: 1rem;">With Boiled Rice or Chips +80p, Egg Fried Rice +£1.40, Noodle +£1.60</div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Chicken with Garlic in Hot Bean Sauce</span>
+                            <span class="item-price">£7.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken in Satay Sauce</span>
+                            <span class="item-price">£7.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken in Szechuan Sauce</span>
+                            <span class="item-price">£7.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken in Kung Po Sauce</span>
+                            <span class="item-price">£7.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken in Thai Sweet Chilli Sauce</span>
+                            <span class="item-price">£7.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken with Cashew Nuts</span>
+                            <span class="item-price">£7.20</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Salt & Pepper -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🧂</span>
+                        <h3 class="category-title">Salt & Pepper</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Salt & Pepper Chicken Pieces</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Salt & Pepper Chicken Wings</span>
+                            <span class="item-price">£7.00</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Salt & Pepper Ribs</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Spare Ribs in BBQ Sauce</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Thai Style Spare Ribs</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Salt & Pepper King Prawn</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fried Rice -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🍚</span>
+                        <h3 class="category-title">Fried Rice</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Special Fried Rice</span>
+                            <span class="item-price">£8.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">King Prawn Fried Rice</span>
+                            <span class="item-price">£8.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Roast Duck Fried Rice</span>
+                            <span class="item-price">£8.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken Fried Rice</span>
+                            <span class="item-price">£7.60</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Singapore Fried Rice</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chow Mein -->
+                <div class="menu-category">
+                    <div class="category-header">
+                        <span class="category-icon">🍝</span>
+                        <h3 class="category-title">Chow Mein</h3>
+                    </div>
+                    <div class="menu-items">
+                        <div class="menu-item">
+                            <span class="item-name">Special Chow Mein</span>
+                            <span class="item-price">£8.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">King Prawn Chow Mein</span>
+                            <span class="item-price">£8.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Roast Duck Chow Mein</span>
+                            <span class="item-price">£8.20</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Chicken Chow Mein</span>
+                            <span class="item-price">£7.60</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="item-name">Singapore Vermicelli (Dry)</span>
+                            <span class="item-price">£7.80</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kiddie's Box -->
+                <div class="menu-category kiddies-box">
+                    <div class="category-header">
+                        <span class="category-icon">🧒</span>
+                        <h3 class="category-title">Kiddie's Meal Box</h3>
+                    </div>
+                    <div style="text-align: center; padding: 1rem 0;">
+                        <div style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">£4.80</div>
+                        <div style="font-weight: 600;">
+                            <div>Chicken Nuggets (4)</div>
+                            <div>Sausage (1)</div>
+                            <div>Chips & Soft Drink</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banquets -->
+            <div class="section-header" style="margin-top: 6rem;">
+                <div class="section-badge">PERFECT FOR SHARING</div>
+                <h2 class="section-title">Banquets</h2>
+            </div>
+
+            <div class="banquet-grid">
+                <div class="banquet-card">
+                    <div class="banquet-header">For 1 Person - £14.00</div>
+                    <ul class="banquet-items">
+                        <li>Chicken & Sweet Corn Soup</li>
+                        <li>Crispy Spring Roll</li>
+                        <li>Sweet & Sour Chicken</li>
+                        <li>Egg Fried Rice</li>
+                    </ul>
+                </div>
+
+                <div class="banquet-card">
+                    <div class="banquet-header">For 2 Persons - £33.00</div>
+                    <ul class="banquet-items">
+                        <li>Chicken & Sweet Corn Soup (2)</li>
+                        <li>Crispy Spring Roll • BBQ Spare Ribs</li>
+                        <li>Chicken Curry</li>
+                        <li>Beef with Green Pepper in Black Bean Sauce</li>
+                        <li>Egg Fried Rice</li>
+                        <li>Prawn Crackers</li>
+                    </ul>
+                </div>
+
+                <div class="banquet-card">
+                    <div class="banquet-header">For 3 Persons - £48.00</div>
+                    <ul class="banquet-items">
+                        <li>Chicken & Sweet Corn Soup (3)</li>
+                        <li>Prawn Crackers • Crispy Spring Roll</li>
+                        <li>Sesame Chicken on Toast</li>
+                        <li>Salt & Pepper Spare Ribs</li>
+                        <li>Sweet & Sour Chicken</li>
+                        <li>Beef Curry</li>
+                        <li>Chicken with Garlic in Hot Bean Sauce</li>
+                        <li>Yung Chow Fried Rice</li>
+                    </ul>
+                </div>
+
+                <div class="banquet-card">
+                    <div class="banquet-header">For 4 Persons - £68.00</div>
+                    <ul class="banquet-items">
+                        <li>Chicken & Sweet Corn Soup (4)</li>
+                        <li>Prawn Crackers • Crispy Spring Roll</li>
+                        <li>Sesame Prawn on Toast</li>
+                        <li>Salt & Pepper Chicken Wings</li>
+                        <li>Spare Ribs in Kin Do Sauce</li>
+                        <li>Chicken with Green Pepper in Black Bean Sauce</li>
+                        <li>Beef in Satay Sauce</li>
+                        <li>Chicken Curry</li>
+                        <li>Char Siu with Mushroom</li>
+                        <li>Yung Chow Fried Rice (4)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlights -->
+    <section class="highlights-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title" style="color: var(--light);">Why Choose Chopsticks</h2>
+            </div>
+            <div class="highlights-grid">
+                <div class="highlight-card">
+                    <div class="highlight-icon">✨</div>
+                    <h3>Fresh & Quality</h3>
+                    <p>All meals freshly cooked with pure vegetable oil to ensure the best taste and quality</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">📋</div>
+                    <h3>Extensive Menu</h3>
+                    <p>Over 300 dishes combining traditional English classics and authentic Chinese cuisine</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">❤️</div>
+                    <h3>Local Favourite</h3>
+                    <p>Proudly serving Tuebrook and Liverpool with dedication and passion for years</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section" id="location">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-badge">WHERE TO FIND US</div>
+                <h2 class="section-title">Our Location</h2>
+                <p class="section-subtitle">Visit us in Tuebrook, Liverpool</p>
+            </div>
+            <div class="map-wrapper">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2375.386!2d-2.9336!3d53.4247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTPCsDI1JzI5LjAiTiAywrA1NicwMS4wIlc!5e0!3m2!1sen!2suk!4v1234567890&q=19+Lisburn+Lane+Liverpool+L13+9AE"
+                    width="100%" 
+                    height="500" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+            <div class="location-info">
+                <p class="location-address">📍 19 Lisburn Lane, Tuebrook, Liverpool L13 9AE</p>
+                <a href="https://www.google.com/maps/dir/?api=1&destination=19+Lisburn+Lane+Liverpool+L13+9AE" 
+                   target="_blank" 
+                   class="directions-btn">
+                    🗺️ Get Directions
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="section-container">
+            <div class="allergen-notice">
+                ⚠️ ALLERGEN NOTICE: If you are allergic to Nuts or Seafood or any ingredients, please advise us before placing your order. Please be advised that due to the risk of cross contamination, we cannot be sure that our food is free from all allergens.
+            </div>
+            
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Chopsticks</h3>
+                    <p>Traditional English and Chinese food to takeaway shop serving Tuebrook and Liverpool.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <a href="tel:01512284995">0151 228 4995</a>
+                    <p>19 Lisburn Lane<br>Tuebrook, Liverpool<br>L13 9AE</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Opening Times</h3>
+                    <p>Mon, Wed-Sun: 4:30pm - 11:00pm</p>
+                    <p>Fri-Sat: 4:30pm - 11:30pm</p>
+                    <p style="color: var(--secondary);">Tuesday: CLOSED</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legend</h3>
+                    <p>🥢 = Contains Peanuts/Cashews</p>
+                    <p>♨️ = Hot</p>
+                    <p>🌱 = Suitable for Vegetarian</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                © 2026 Chopsticks Takeaway. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // GSAP Scroll Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Fade in menu categories
+        gsap.utils.toArray('.menu-category').forEach((category, i) => {
+            gsap.from(category, {
+                scrollTrigger: {
+                    trigger: category,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        });
+
+        // Fade in banquet cards
+        gsap.utils.toArray('.banquet-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                delay: i * 0.15
+            });
+        });
+
+        // Fade in highlight cards
+        gsap.utils.toArray('.highlight-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 0,
+                scale: 0.9,
+                duration: 0.8,
+                delay: i * 0.2
+            });
+        });
+
+        // Map section animation
+        gsap.from('.map-wrapper', {
+            scrollTrigger: {
+                trigger: '.map-wrapper',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1
+        });
+
+        // Location info animation
+        gsap.from('.location-info', {
+            scrollTrigger: {
+                trigger: '.location-info',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            delay: 0.3
+        });
+
+        // Hours card animation
+        gsap.from('.hours-card', {
+            scrollTrigger: {
+                trigger: '.hours-card',
+                start: 'top 80%',
+                toggleActions: 'play none none reverse'
+            },
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.8
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
